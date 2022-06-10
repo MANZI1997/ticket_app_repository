@@ -1,0 +1,116 @@
+
+<?page title="save staff page" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window apply="org.zkoss.bind.BindComposer" id="list"
+		vflex="1" border="none" width="100%" mode="embedded" sizable="false"
+		sclass="body-window"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.AddStaffVM')">
+		 <auxhead>
+            <auxheader colspan="2" label="Registration Form" iconSclass="z-icon-user-circle-o"/>
+        </auxhead>
+<include src="/adminPage.zul"/>
+       <grid class="col-sm-4">
+        <columns visible="false">
+            <column/>
+            <column/>
+        </columns>
+        
+        <rows>
+            <row id="staffFirstNameRow" style="background-color:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="FirstName"/>
+                <textbox id="staffFirstNameBox" value="@bind(vm.staff.firstName)" hflex="1" constraint="no empty"/>
+            </row>
+            <row id="staffLastNameRow" style="background-color:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="LastName"/>
+                <textbox id="staffLastNameBox" value="@bind(vm.staff.lastName)"  hflex="1" constraint="no empty"/>
+            </row>
+            <row id="staffPhoneRow" style="background-color:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="Phone Number"/>
+                <textbox id="staffPhoneBox" value="@bind(vm.staff.phoneNumber)" hflex="1" constraint="no empty, no negative," maxlength="10" />
+            </row>
+            <row id="staffEmailRow" style="background-color:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="Email"/>
+                <textbox id="staffEmailBox" value="@bind(vm.staff.email)" hflex="1" placeholder="enter email"  constraint="/.+@.+\.[a-z]+/: Please use valid format for email"/>
+            </row>
+            
+<!--             <row id="namesRow" style="background-color:lavenderblush;"> -->
+<!--                 constraint="no empty" -->
+<!--                 <label value="Names"/> -->
+<!--                 <textbox id="namesBox" value="@bind(vm.employee.names)" hflex="1" constraint="no empty"/> -->
+<!--             </row> -->
+<!--              <row id="ageRow" style="background-color:lavenderblush;"> -->
+<!--                 constraint="no empty" -->
+<!--                 <label value="Age"/> -->
+<!--                 <intbox id="ageBox" value="@bind(vm.employee.age)" hflex="1" constraint="no empty"/> -->
+<!--             </row> -->
+            <row id="staffDeptRow" style="background-color:ECF3EC;">
+                 <label value="Department"/>
+                 <combobox sclass="required"
+		                readonly="true" autodrop="true" width="100%"
+						model="@load(vm.staffDepts)"
+						selectedItem="@bind(vm.staffDept)">
+<!-- 						<template -->
+<!-- 							name="model"> -->
+<!-- 							<comboitem -->
+<!-- 								label="@load(each.description)" /> -->
+<!-- 						</template> -->
+			      </combobox>
+            </row>
+               <row id="staffGenderRow" style="background-color:ECF3EC;">
+                 <label value="Gender"/>
+                 <combobox sclass="required"
+		                readonly="true" autodrop="true" width="100%"
+						model="@load(vm.genders)"
+						selectedItem="@bind(vm.gender)">
+<!-- 						<template -->
+<!-- 							name="model"> -->
+<!-- 							<comboitem -->
+<!-- 								label="@load(each.description)" /> -->
+<!-- 						</template> -->
+			      </combobox>
+            </row>
+               <row id="staffRoleRow" style="background-color:ECF3EC;">
+                 <label value="Staff Role"/>
+                 <combobox sclass="required"
+		                readonly="true" autodrop="true" width="100%"
+						model="@load(vm.staffRoles)"
+						selectedItem="@bind(vm.role)">
+<!-- 						<template -->
+<!-- 							name="model"> -->
+<!-- 							<comboitem -->
+<!-- 								label="@load(each.description)" /> -->
+<!-- 						</template> -->
+			      </combobox>
+            </row>
+            
+<!--             <row style="background-color:lavenderblush;"> -->
+<!--                 <label value="Date of Birth"/> -->
+<!--                 <datebox id="date_of_birth" -->
+<!-- 						 value="@bind(vm.employee.dateOfBirth)" -->
+<!-- 						 readonly="true" constraint="no empty" width="100%" -->
+<!-- 						 format="dd/MM/yyyy" /> -->
+<!--             </row> -->
+            <row id="usernameRow" style="background-color:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="UserName"/>
+                <textbox id="staffusernameBox" value="@bind(vm.staff.username)" hflex="1" constraint="no empty" />
+            </row>
+   <row id="staffpwdRow" style="background-color:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="Password"/>
+                <textbox id="passwordBox" value="@bind(vm.staff.password)" hflex="1" constraint="no empty" />
+            </row>
+            <row spans="1" align="right">
+                <hlayout>
+                    <button id="submitButton" onClick="@command('saveStaff')" style="background:#81AC83;" label="Save"/>
+<!--                     <button id="editButton" onClick="@command('updateStaff')" label="Update"/> -->
+                </hlayout>
+            </row>
+        </rows>
+    </grid>
+</window>
+</zk>

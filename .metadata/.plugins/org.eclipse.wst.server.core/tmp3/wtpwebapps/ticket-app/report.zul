@@ -1,0 +1,115 @@
+<zk>
+<window>
+<grid>
+		<rows>
+		<row style="background-color:ECF3EC;">
+				<label value="Department" />
+				<combobox sclass="required" readonly="true"
+					autodrop="true" width="100%" >
+				</combobox>
+		<row>
+		start date:<datebox id="id1" cols="12" format="medium" oncreate="self.value=newe Date()"/>
+		           <timebox id="tb1" cols="12" format="medium" oncreate="self.value= new Date()"/>
+		end date: <datebox id="id2" cols="12" format="medium" oncreate="self.value=newe Date()"/>
+		           <timebox id="tb2" cols="12" format="medium" oncreate="self.value= new Date()"/>
+		</row>
+		</row>
+		<row  style="background-color:ECF3EC;">
+				<label value="Status" />
+				<combobox sclass="required" readonly="true"
+					autodrop="true" width="100%" >
+				</combobox>
+			
+		</row>
+</rows>
+</grid>
+		<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+			<!-- 			<rows> -->
+			<!-- 				<row spans="1" align="right"> -->
+			<!-- 					<hlayout> -->
+			<!-- 						<button id="addButton" -->
+			<!-- 							onClick="@command('addNew')" style="background:#81AC83;" label="Add New" /> -->
+			<!-- 					</hlayout> -->
+			<!-- 				</row> -->
+			<!-- 			</rows> -->
+		</grid>
+		<grid  style="background:#81AC83;"
+			mold="paging" pageSize="5">
+
+			<columns style="background:#81AC83;">
+				<column label="ID" align="center"
+					style="background:#81AC83;" sort="auto(issueId)" />
+				<column label="SUBJECT" style="background:#81AC83;"
+					align="center" sort="auto(issueSubject)" />
+
+				<column label="DESCRIPTION" style="background:#81AC83;"
+					align="center" sort="auto(issueDescription)" />
+				<column label="Issue Creator"
+					style="background:#81AC83;" align="center"
+					sort="auto(issueCreator)" />
+				<column label="Issue Recipient"
+					style="background:#81AC83;" align="center"
+					sort="auto(issueRecipient)" />
+				<column label="Issue Creator"
+					style="background:#81AC83;" align="center"
+					sort="auto(issueCreator)" />
+
+
+				<column label="OPEN_DATE" style="background:#81AC83;"
+					align="center" sort="auto(issueOpenDate)" />
+
+				<column label="STATUS" style="background:#81AC83;"
+					align="center" sort="auto(issueStatus)" />
+
+				<column label="ACTIONS" style="background:#81AC83;"
+					align="center" />
+			</columns>
+<!-- 			<template name="model"> -->
+<!-- 				<row> -->
+<!-- 					<label value="" /> -->
+<!-- 					<label value="" /> -->
+<!-- 					<label value="" /> -->
+<!-- 					<label value="" /> -->
+<!-- 					<label value=""/> -->
+<!-- 						<label value="" /> -->
+<!-- 						<label value="" /> -->
+
+<!-- 						<div class="pull_right"> -->
+<!-- 							<menubar sclass="action-menubar"> -->
+<!-- 								<menu sclass="action-menu" -->
+<!-- 									label="Manage"> -->
+<!-- 									<menupopup> -->
+<!-- 										<zk> -->
+
+<!-- 											<menuitem label="Delete" -->
+<!-- 												tooltiptext="Delete Issue" -->
+<!-- 												iconSclass="fa fa-check fa-color-success" -->
+<!-- 												onClick="" /> -->
+
+<!-- 											<menuitem label="Update" -->
+<!-- 												tooltiptext="Update Issue" -->
+<!-- 												iconSclass="fa fa-check fa-color-success" -->
+<!-- 												onClick="" /> -->
+
+<!-- 											<menuitem label="Response" -->
+<!-- 												tooltiptext="Reply issue" -->
+<!-- 												iconSclass="fa fa-check fa-color-success" -->
+<!-- 												onClick="" -->
+<!-- 												disabled="" /> -->
+
+<!-- 										</zk> -->
+<!-- 									</menupopup> -->
+<!-- 								</menu> -->
+
+<!-- 							</menubar> -->
+<!-- 						</div> -->
+<!-- 				</row> -->
+<!-- 			</template> -->
+		</grid>
+
+		</window>
+</zk>

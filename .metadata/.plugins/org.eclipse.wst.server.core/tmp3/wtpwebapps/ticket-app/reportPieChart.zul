@@ -1,0 +1,3 @@
+<window apply="com.ticket.viewmodel.ReportPieChart " width="100%">
+    <charts id="chart" type="pie" title="Issue by Department"/>
+</window>

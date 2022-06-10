@@ -1,0 +1,35 @@
+<?page title="staff page" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window>
+ <style src="/widgets/layout/split_layout/splitlayout-demo.css" />
+    <tabbox>
+        <tabs>
+            <tab label="Simple"/>
+            <tab label="Event"/>
+            <tab label="Combined"/>
+            <tab label="Minimal Height"/>
+            <tab label="Customized Splitter"/>
+        </tabs>
+        <tabpanels>
+            <tabpanel height="600px">
+                <apply templateURI="/widgets/layout/split_layout/simple.zul"/>
+            </tabpanel>
+            <tabpanel height="600px">
+                <apply templateURI="/widgets/layout/split_layout/event.zul"/>
+            </tabpanel>
+            <tabpanel height="600px">
+                <apply templateURI="/widgets/layout/split_layout/combined.zul"/>
+            </tabpanel>
+            <tabpanel height="600px">
+                <apply templateURI="/widgets/layout/split_layout/minHeight.zul"/>
+            </tabpanel>
+            <tabpanel>
+                <apply templateURI="/widgets/layout/split_layout/customize.zul"/>
+            </tabpanel>
+        </tabpanels>
+ 
+
+    </tabbox>
+
+</zk>
+

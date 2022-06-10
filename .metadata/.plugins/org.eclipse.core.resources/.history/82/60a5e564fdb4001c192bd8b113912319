@@ -1,0 +1,28 @@
+package com.ticket.service;
+
+import java.util.List;
+
+import com.ticket.domain.Response;
+import com.ticket.domain.Staff;;
+
+public interface IResponseService {
+
+	public final String NAME="ResponseServiceImpl";
+	
+	//create or insert new response
+		public  void createResponse(Response response);
+		//select response by id
+		public  Response selectResponsebyId(int feedback_id);
+		//update response information 
+		public  void updateResponse(Response response);
+		//delete response
+		public  void deleteResponse(Response response);
+		public void deleteAll();
+		//get list of all response
+		List<Response> findAllResponse();
+		
+		
+		public List<Response> findResponseByIssueCreator(Staff staffCurrent);
+	
+
+}

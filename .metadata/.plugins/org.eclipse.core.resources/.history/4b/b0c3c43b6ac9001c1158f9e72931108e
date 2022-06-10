@@ -1,0 +1,104 @@
+package com.ticket.viewmodel;
+
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Messagebox;
+
+import com.ticket.domain.EStaffRole;
+import com.ticket.domain.SendEmail;
+import com.ticket.domain.Staff;
+import com.ticket.service.IStaffService;
+
+public class ForgotPasswordVM {
+	@WireVariable(IStaffService.NAME)
+	private transient IStaffService staffService;
+	
+	
+	private Staff staff=new Staff();
+	
+	Staff staffCurrent=new Staff();
+	
+	private String email;
+	
+	private static final String FORGOT_PASSWORD = "/forgotPassword.zul";
+	
+	
+	@Command
+	@NotifyChange({ "" })
+	public void forgetCredentials() {
+			staff = staffService.findByEmail(email);
+			String uemail = staff.getEmail();
+			if (email.equals(uemail)) {
+				SendEmail.sendNotification(staff.getEmail(), "Dear,"+ "\t" +staff.getFirstName() +"\t" +"your request  for resetting password on IFMIS ticketing system has received successfully", "this is your recent passcode "+":" + "qwret123" + "\n" + "Regards!"+ "\n"+ "\n" + "IFMIS-Ticketing.");
+				Executions.sendRedirect(FORGOT_PASSWORD);
+			} else {
+				Clients.showNotification("this email does not found");
+			}
+		
+
+	}
+
+	/**
+	 * @return the staffService
+	 */
+	public IStaffService getStaffService() {
+		return staffService;
+	}
+
+	/**
+	 * @param staffService the staffService to set
+	 */
+	public void setStaffService(IStaffService staffService) {
+		this.staffService = staffService;
+	}
+
+	/**
+	 * @return the staff
+	 */
+	public Staff getStaff() {
+		return staff;
+	}
+
+	/**
+	 * @param staff the staff to set
+	 */
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+
+	/**
+	 * @return the staffCurrent
+	 */
+	public Staff getStaffCurrent() {
+		return staffCurrent;
+	}
+
+	/**
+	 * @param staffCurrent the staffCurrent to set
+	 */
+	public void setStaffCurrent(Staff staffCurrent) {
+		this.staffCurrent = staffCurrent;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
+
+
+}

@@ -1,0 +1,136 @@
+package com.ticket.domain;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import org.hibernate.annotations.Type;
+
+@Entity
+@Table(name = "RESPONSE")
+
+public class Response {
+		/** The feedback id. */
+	// The generated value is auto increment
+	@Id
+	@Column(name = "FEED_BACK_ID", nullable = false)
+	@Type(type = "pg-uuid")
+	private UUID feedbackId;
+	
+	@Column(name="DATE",nullable = true)
+	private LocalDate respDate = LocalDate.now();
+	
+	@Column(name = "FEED_BACK", nullable = true )
+	private String feedBack;
+
+	@OneToOne
+	@JoinColumn( name = "DOCUMENT_ID", nullable = true)
+	private Document document;
+	
+	@ManyToOne
+	@JoinColumn(name = "REFERENCE_FEED_BACK_ID", nullable = true)
+	private Response response;
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "ISSUE_STAFF_ID", nullable = false)
+	private StaffIssue staffIssue;
+
+   
+	public UUID getFeedbackId() {
+		return feedbackId;
+	}
+
+	public void setFeedbackId(UUID feedbackId) {
+		this.feedbackId = feedbackId;
+	}
+
+	/**
+	 * @return the feed back
+	 */
+	public String getFeedBack() {
+		return feedBack;
+	}
+
+	
+
+	/**
+	 * @param feedback
+	 *            the feedback to set
+	 */
+	public void setFeedBack(String feedBack) {
+		this.feedBack = feedBack;
+	}
+
+	
+
+
+	/**
+	 * @return the respDate
+	 */
+	public LocalDate getRespDate() {
+		return respDate;
+	}
+
+	/**
+	 * @param respDate the respDate to set
+	 */
+	public void setRespDate(LocalDate respDate) {
+		this.respDate = respDate;
+	}
+
+
+
+	/**
+	 * @return the document
+	 */
+	public Document getDocument() {
+		return document;
+	}
+
+	/**
+	 * @param document the document to set
+	 */
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+
+	/**
+	 * @return the response
+	 */
+	public Response getResponse() {
+		return response;
+	}
+
+	/**
+	 * @param response the response to set
+	 */
+	public void setResponse(Response response) {
+		this.response = response;
+	}
+
+	/**
+	 * @return the staffIssue
+	 */
+	public StaffIssue getStaffIssue() {
+		return staffIssue;
+	}
+
+	/**
+	 * @param staffIssue the staffIssue to set
+	 */
+	public void setStaffIssue(StaffIssue staffIssue) {
+		this.staffIssue = staffIssue;
+	}
+
+	
+
+
+	
+}

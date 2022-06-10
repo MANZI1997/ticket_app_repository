@@ -1,0 +1,51 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="replyResponse" vflex="1"
+		border="none" width="100%" mode="embedded" sizable="false"
+		sclass="body-window"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.ReplyResponseVM')">
+		<auxhead>
+		
+			<auxheader colspan="2" label="Response Form"
+				iconSclass="z-icon-user-circle-o" />
+		</auxhead>
+		<include src="/adminPage.zul" />
+		<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+
+			<rows>
+				
+				<row id="respDescriptionRow"
+					style="background-color:ECF3EC;">
+					<label value="Response Description" />
+					<textbox id="respDescriptionBox" hflex="1" rows="5"
+						cols="40" value="@bind(vm.replyResponse.feedBack)"
+						constraint="no empty" />
+				</row>
+				<row id="responseFileRow"
+					style="background-color:white;">
+					<label value="Supporting document" />
+					<textbox id="responseFileBox"
+						value="@load(vm.fileName)" readonly="true" />
+					<button id="btn" label="Brouse.."
+						style="background:white;color:black;" hflex="min"
+						upload="true,maxsize=-1,multiple=true"
+						onUpload="@command('doUpload')" />
+				</row>
+				
+
+				<row spans="1" align="right">
+					<hlayout>
+						<button id="submitButton"
+							onClick="@command('replyResponseButton')" style="background:#81AC83;" label="Submit" />
+						<!--                     <button id="editButton" onClick="@command('updateResponse')" label="Update"/> -->
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
+	
+	</window>
+</zk>

@@ -1,0 +1,18 @@
+<?page title="staff page" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<menubar>
+	    <menu label="File">
+	    <menu label="Help">
+	        <menupopup>
+	            <menuitem label="Index"/>
+	            <menu label="About">
+	                <menupopup>
+	                    <menuitem label="About ZK"/>
+	                    <menuitem label="About Potix"/>
+	                </menupopup>
+	            </menu>
+	        </menupopup>
+	    </menu>
+	</menubar>
+</zk>
+

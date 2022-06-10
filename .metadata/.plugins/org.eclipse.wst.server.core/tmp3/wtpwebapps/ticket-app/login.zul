@@ -1,0 +1,50 @@
+<?page title="staff login " contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div height="100%">
+
+		<hbox vflex="1" hflex="1" align="center" pack="center"
+			spacing="20px">
+			<vlayout>
+			
+				<window id="loginWin" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.ticket.login.LoginAuthenticationVM')"
+					title="Login Form for Staff" style="background:#81AC83;color:black;" border="normal" hflex="min">
+					<vbox hflex="min" align="center">
+						<grid hflex="min">
+							<columns>
+								<column hflex="min" align="right" />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<label style="font-weight:bold;">Username </label>
+									<textbox tabindex="1"  height="50px" value="@bind(vm.username)" width="400px" placeholder="ENTER USERNAME" />
+								</row>
+								<row>
+									<label style="font-weight:bold;">Password</label> 
+									<textbox tabindex="2"  type="password" height="50px" value="@bind(vm.password)" width="400px" placeholder="ENTER PASSWORD"/>
+								</row>
+									<row>
+									<label style="width:5px;">Remember me</label> <checkbox id="check"/>
+									<button style="width:5px;" href="/forgotPassword.zul" label="forgot passoword"/>
+									
+									</row>
+									<row>
+									<label></label>
+									<toolbarbutton label="forgot password ?"  style="font-weight:bold;F3ECEC" href="/forgotPassword.zul"/>
+									</row>							
+							</rows>
+						</grid>
+						
+						
+
+<label id="message" style="height:5px;" sclass="warn" value="&#160;" />
+					<button id="login" style="background:#81AC83" label="Login" onClick="@command('loginUsernameAndPassword')" />	
+					<button id="cancel" style="background:#81AC83" label="Cancel" href="/index.zul" />
+						
+<!-- 					<button style="background:#81AC83" href="/forgotPassword.zul" label="forgot passoword"/>		 -->
+					</vbox>	
+				</window>
+			</vlayout>
+		</hbox>
+	</div>
+</zk>

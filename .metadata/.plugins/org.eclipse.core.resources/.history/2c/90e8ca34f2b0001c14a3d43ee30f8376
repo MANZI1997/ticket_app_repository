@@ -1,0 +1,79 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="list" vflex="1"
+		border="none" width="100%" mode="embedded" sizable="false"
+		sclass="body-window"
+		viewModel="@id('vmAdIssue') @init('com.ticket.viewmodel.AddIssueVM')">
+		<auxhead>
+			<auxheader colspan="2" label="Registration Form"
+				iconSclass="z-icon-user-circle-o" />
+				
+		</auxhead>
+		<include src="/adminPage.zul"/>
+		<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+
+			<rows>
+				<row id="issueSbjctRow"
+					style="background-color:lavenderblush;">
+					<!-- constraint="no empty" -->
+					<label value="Issue Subject" />
+					<textbox id="issueSbjctBox"
+						value="@bind(vmAdIssue.issue.issueSubject)" hflex="1"
+					constraint="no empty" />
+				</row>
+
+X
+
+				<row id="issueDescriptionRow"
+					style="background-color:lavenderblush;">
+					<!-- constraint="no empty" -->
+					<label value="Issue Description" />
+					<textbox id="issueDescriptionBox" hflex="1" rows="5"
+						cols="40" value="@bind(vmAdIssue.issue.issueDescription)"
+						constraint="no empty" />
+						
+				</row>
+				
+		<row id="issueCreatorRow"
+					style="background-color:lavenderblush;">
+					<!-- constraint="no empty" -->
+					<label value="Issue creator" />
+					<textbox id="issueCreatorBox" 
+						value="@load(vmAdIssue.currentUser.staffId)" hflex="1"
+						constraint="no empty" readonly="true"/>
+				</row>		
+				
+				<!-- <row id="issueFileRow" style="background-color:lavenderblush;">
+					constraint="no empty"
+					<label value="Supporting document"/>
+					<textbox id="issueFileBox" value="@bind(vmAdIssue.issue.issueFile)" hflex="1" constraint="no empty"/>
+					</row>-->
+				<row id="issueRecipientRow"
+					style="background-color:lavenderblush;">
+					<label value="Recipient" />
+					<combobox model="@load(vmAdIssue.staffList)"
+						selectedItem="@bind(vmAdIssue.issue.issueRecipient)">
+						<template name="model">
+							<comboitem label="@load(each.firstName)"
+								 />
+						</template>
+					</combobox>
+				</row>
+
+
+
+				<row spans="1" align="right">
+					<hlayout>
+						<button id="submitButton"
+							onClick="@command('saveIssue')" label="Submit" />
+						<!--                     <button id="editButton" onClick="@command('updateIssue')" label="Update"/> -->
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
+	</window>
+</zk>

@@ -1,0 +1,75 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="reportIssueResponse" vflex="1"
+		border="none" width="100%" mode="embedded" sclass="body-window"
+		maximizable="false" contentStyle="Overflow:auto"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.ReportMainFormVM')">
+		
+<include src="/adminPage.zul"/>
+<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row spans="1" align="right">
+					<hlayout>
+						<button id="addButton"
+							onClick="@command('reportPdfIssueResponse')" label="Get List in pdf" />
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
+
+		<grid model="@load(vm.reportIssueResponse)" mold="paging" pageSize="5">
+
+			<columns>
+
+				<column label="STAFF CREATOR" align="center"
+					sort="auto(issueDescription)" />
+					
+					<column label="DEPARTMENT CREATOR" align="center"
+					sort="auto(issueOpenDate)" />
+					
+					<column label="SUBJECT" align="center"
+					sort="auto(issueSubject)" />
+				
+				<column label="DESCRIPTION" align="center"
+					sort="auto(issueDescription)" />
+
+				<column label="OPEN_DATE" align="center"
+					sort="auto(issueOpenDate)" />
+					
+						
+					<column label="STAFF-RECIPIENT -NAME" align="center"
+					sort="auto(staffRecipient)"/>
+					
+					<column label="RESPONSE DESCRIPTION" align="center"
+					sort="auto(responseDescripton)"/>
+					
+					<column label="RESPONSE DATE" align="center"
+					sort="auto(responseDate)"/>
+					
+					<column label="DEPARTMENT RECIPIENT" align="center"
+					sort="auto(issueOpenDate)" />
+					
+				
+
+			</columns>
+			<template name="model" var="item">
+				<row>
+				<label value="@load(item.staffIssue.issueId.issueCreator.firstName)" />
+					<label value="@load(item.staffIssue.issueId.issueCreator.staffDepartment)" />
+				 <label value="@load(item.staffIssue.issueId.issueSubject)" />	
+					<label value="@load(item.staffIssue.issueId.issueDescription)" />
+				 <label value="@load(item.staffIssue.issueOpenDate)" />
+				
+				  <label value="@load(item.staffIssue.issueRecipient.firstName)" />
+				  <label value="@load(item.feedBack)" />
+                  <label value="@load(item.respDate)" />
+				  <label value="@load(item.staffIssue.issueRecipient.staffDepartment)" />
+				</row>
+			</template>
+		</grid>
+	</window>
+</zk>

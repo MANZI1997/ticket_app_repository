@@ -1,0 +1,99 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="new page title" border="normal">
+<grid
+								model="@load(vm.cardsList) @template(each.editStatus ? 'editable' : 'noneditable')"
+								emptyMessage="No record found" mold="paging" pageSize="10"
+								id="customerBalances">
+								<columns style="font-weight: bolder;">
+									<column label="S/N" width="5%" />
+									<column label="Display Title"
+										width="25%" />
+									<column label="DB View(Value Source)"
+										width="20%" />
+									<column label="Visible"
+										width="25%" />
+									 
+
+									<column width="15%">
+										<span
+											class="pull-right text-bold">
+											<label>Actions</label>
+										</span>
+									</column>
+
+								</columns>
+								<rows>
+									<template name="noneditable">
+										<row>
+											<label
+												value="${forEachStatus.index + 1}" />
+
+											<label
+												value="@load(each.mainTitle)" />
+
+											<label
+												value="@load(each.cardDBViewName)" />
+											
+
+<label
+												value="@load(each.cardVisible eq 'true' ? 'Yes':'No')" />
+ 
+
+											<div class="pull-right">
+												<menubar
+													sclass="action-menubar">
+													<menu
+														sclass="action-menu" label="Manage">
+														<menupopup
+															sclass="action-menu-popup">
+															<menuitem
+																label="Edit" tooltiptext="Edit Item Detail"
+																iconSclass="fa fa-pen icon-btn text-primary"
+																onClick="@command('changeEditableStatus', currentFT=each)" />
+															 <menuitem
+																label="Delete" tooltiptext="Delete"
+																onClick="@command('onDelete',currentFT=each)"
+																iconSclass="fa fa-trash icon-btn text-danger" />
+														</menupopup>
+													</menu>
+												</menubar>
+											</div>
+										</row>
+									</template>
+									<template name="editable">
+										<row>
+											<label
+												value="${forEachStatus.index + 1}" />
+											
+											
+
+				                             <textbox constraint="no empty" value="@bind(each.mainTitle)"/>
+
+											 <combobox
+											     value="@load(each.cardDBViewName)"
+												 model="@load(vm.dbValuesViewsList)"
+												readonly="true" width="100%" sclass="required"
+												selectedItem="@bind(each.cardDBViewName)" disabled="false" constraint="no empty"/>
+												
+												<checkbox mold="switch"
+												label="@load(vm.cardVisible)" onCheck="@command('onCheck')"
+												checked="@bind(vm.visible)" />
+												
+											<div class="pull-right">
+												<button
+													sclass="btn btn-xs btn-outline-primary icon-btn"
+													iconSclass="fa fa-check fa-color-change"
+													onClick="@command('confirm',currentFT=each)" />
+
+												<button
+													sclass="btn btn-xs btn-outline-primary icon-btn"
+													iconSclass="fa fa-times fa-color-danger"
+													onClick="@command('changeEditableStatus', currentFT=each)" />
+											</div>
+										</row>
+									</template>
+								</rows>
+							</grid>
+</window>
+</zk>

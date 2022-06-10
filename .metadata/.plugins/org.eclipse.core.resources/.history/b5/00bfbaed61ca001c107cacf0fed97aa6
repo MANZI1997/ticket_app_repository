@@ -1,0 +1,616 @@
+package com.ticket.viewmodel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.aspectj.bridge.MessageUtil;
+import org.zkoss.bind.BindContext;
+import org.zkoss.bind.BindUtils;
+import org.zkoss.bind.annotation.BindingParam;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
+import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.util.media.Media;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Window;
+
+import com.ticket.domain.Document;
+import com.ticket.domain.EIssueStatus;
+import com.ticket.domain.Issue;
+import com.ticket.domain.SendEmail;
+import com.ticket.domain.Staff;
+import com.ticket.domain.StaffIssue;
+import com.ticket.service.IDocumentService;
+import com.ticket.service.IIssueService;
+import com.ticket.service.IStaffIssueService;
+import com.ticket.service.IStaffService;
+import com.ticket.domain.EStaffDepartment;
+import com.ticket.domain.EStaffRole;
+
+@VariableResolver(DelegatingVariableResolver.class)
+public class AddIssueVM {
+	@WireVariable(IIssueService.NAME)
+	private IIssueService issueService;
+
+	@WireVariable(IStaffService.NAME)
+	private IStaffService staffService;
+
+	@WireVariable(IDocumentService.NAME)
+	private IDocumentService documentService;
+
+	@WireVariable(IStaffIssueService.NAME)
+	private IStaffIssueService staffIssueService;
+
+	private Document document = new Document();
+
+	private EStaffDepartment staffDept;
+
+	private StaffIssue staffIssue = new StaffIssue();
+
+	private Staff staff = new Staff();
+
+	private UUID staffId;
+
+	private Staff currentUser = new Staff();
+
+	private Issue issue = new Issue();
+
+	private EStaffDepartment selectedDept = null;
+	private List<EStaffDepartment> staffDepts = null;
+	private List<Staff> staffListBySelectedDept = new ArrayList<>();
+	private static final Object EStaffDepartment = null;
+	private List<Issue> openIssues = new LinkedList<>();
+	private List<Staff> staffList = new ArrayList<>();
+	private static final String CREATED_ISSUE_LIST_PAGE = "/createdIssueList.zul";
+
+	private static final String ADD_ISSUE_PAGE = "/saveIssue.zul";
+
+	private static final String UPDATE_ISSUE_PAGE = "/updateIssue.zul";
+
+	private static final String STAFF_ISSUE_PAGE = "/createdIssueListByRecipient.zul";
+
+	private static final String FORWARD_ISSUE_PAGE = "/forwardIssue.zul";
+
+	private List<Issue> issueList = new LinkedList<>();
+
+	private Issue issuesByCreatorCurrentUser = new Issue();
+
+	private List<StaffIssue> issuesByCreator = new LinkedList<>();
+
+	private List<StaffIssue> findIssuesByCreator = new LinkedList<>();
+
+	private List<Issue> issuesByCreator2 = new LinkedList<>();
+
+	private static final String UPDATE_CREATED_ISSUE_PAGE = "/updateCreatedIssue.zul";
+
+	private static final String RESPONSE_LIST_PAGE = "/responseList.zul";
+
+	private Media media;
+	private String fileName;
+
+	@Init
+	public void init(@ContextParam(ContextType.VIEW) final Component view) {
+
+		staffDepts = Arrays.asList(((EStaffDepartment) EStaffDepartment).values());
+		staffList = staffService.findAllStaff();
+		Session session = Sessions.getCurrent();
+		currentUser = (Staff) session.getAttribute("user");
+
+		issueList = issueService.findIssuesByCreator(currentUser);
+
+		for (int index = 0; index < issueList.size(); index = index + 1) {
+			
+			findIssuesByCreator = staffIssueService.findIssuesByCreator(issueList.get(index));
+	
+		    for (int indexSi = 0; indexSi < findIssuesByCreator.size(); indexSi = indexSi + 1) {
+
+			issuesByCreator.add(findIssuesByCreator.get(indexSi));
+		  }
+		}
+}
+
+	@Command
+	@NotifyChange({ "issuesByCreator" })
+	public void saveIssue() {
+		validateIssue();
+		staff.setStaffDepartment(staffDept);
+		issue.setIssueId(UUID.randomUUID());
+		issue.setIssueCreator(currentUser);
+		staffIssue.setStaffIssueId(UUID.randomUUID());
+		staffIssue.setIssueId(issue);
+		issueService.addIssue(issue);
+		staffIssueService.addStaffIssue(staffIssue);
+		SendEmail.sendNotification(staffIssue.getIssueRecipient().getEmail(),issue.getIssueSubject(),"Dear,"+staffIssue.getIssueRecipient().getFirstName() +", You have received an issue " + "" + "from "+currentUser.getFirstName());
+		Messagebox.show(" issue about" + issue.getIssueSubject() + "sent successfully!");
+
+		issuesByCreator = staffIssueService.findAllIssues();
+		Executions.sendRedirect(CREATED_ISSUE_LIST_PAGE);
+	}
+
+	public void validateIssue() {
+		if (issue.getIssueDescription() == null) {
+			Messagebox.show("Please enter issue description");
+		}
+	}
+
+	@Command
+	@NotifyChange
+	public void addNew() {
+
+		Session session = Sessions.getCurrent();
+		currentUser = (Staff) session.getAttribute("user");
+
+		Executions.sendRedirect(ADD_ISSUE_PAGE);
+	}
+
+	@Command
+	@NotifyChange({ "selectedDept", "staffListBySelectedDept" })
+	public void displayStaffByDepartment() {
+		try {
+			staffListBySelectedDept = staffService.findAllStaffByDeparment(selectedDept);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Command
+	@NotifyChange({ "issuesByCreator" })
+	public void deleteIssue(@ContextParam(ContextType.VIEW) final Component view,
+			@BindingParam("staffIssue") final StaffIssue staffIssue) {
+		Selectors.wireComponents(view, this, false);
+		Messagebox.show("Delete Issue", "Confirm Delete", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+				new EventListener() {
+					@Override
+					public void onEvent(final Event e) {
+						if (Messagebox.ON_OK.equals(e.getName())) {
+							try {
+
+								staffIssueService.deleteStaffIssue(staffIssue);
+								// issuesByCreator = staffIssueService.findIssuesByCreator(currentUser);
+								BindUtils.postNotifyChange(null, null, AddIssueVM.this, "openIssues");
+								Messagebox.show(
+										"Issue number:" + staffIssue.getIssueId().getIssueSubject() + " is deleted");
+
+							} catch (Exception ex) {
+								// issuesByCreator = staffIssueService.findIssuesByCreator(currentUser);
+								Messagebox.show("Error: " + ex);
+								return;
+							}
+						}
+					}
+				});
+
+	}
+
+	@Command
+	@NotifyChange({ "selectedIssue" })
+	public void updateIssueButton(@BindingParam("staffIssue") final StaffIssue staffIssue) {
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("selectedIssue", staffIssue);
+		Window winUser = (Window) Executions.createComponents(UPDATE_ISSUE_PAGE, null, parameters);
+		try {
+			winUser.doModal();
+		} catch (SuspendNotAllowedException e) {
+			MessageUtil.fail("Fail: " + e);
+		}
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void doUpload(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
+		UploadEvent upEvent = null;
+		Object objUploadEvent = ctx.getTriggerEvent();
+		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
+
+			upEvent = (UploadEvent) objUploadEvent;
+		}
+		if (upEvent != null) {
+			media = upEvent.getMedia();
+			fileName = media.getName();
+			document.setDocId(UUID.randomUUID());
+			document.setDocContent(media.getByteData());
+			document.setDocContenName(media.getName());
+			document.setDocContentType(media.getContentType());
+			issue.setDocument(document);
+			documentService.addDocument(document);
+			Messagebox.show("File Uploaded:" + fileName);
+
+		}
+
+	}
+
+	@Command
+	@NotifyChange({ "selectedStaffIssue" })
+	public void wiewResponseButton(@BindingParam("staffIssue") final StaffIssue staffIssue) {
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("selectedStaffIssue", staffIssue);
+		Window winUser = (Window) Executions.createComponents(RESPONSE_LIST_PAGE, null, parameters);
+		try {
+			winUser.doModal();
+		} catch (SuspendNotAllowedException e) {
+			MessageUtil.fail("Fail: " + e);
+		}
+	}
+
+	@Command
+	@NotifyChange({ "selectedStaffIssue" })
+	public void forwardIssueButton(@BindingParam("staffIssue") final StaffIssue staffIssue) {
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("selectedStaffIssue", staffIssue);
+		Window winUser = (Window) Executions.createComponents(FORWARD_ISSUE_PAGE, null, parameters);
+		try {
+			winUser.doModal();
+		} catch (SuspendNotAllowedException e) {
+			MessageUtil.fail("Fail: " + e);
+		}
+	}
+
+	@Command
+	public void createdIssueListByRecipient(@BindingParam("issue") final Issue issue) {
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("selectedIssue", issue);
+
+		Window winUser = (Window) Executions.createComponents(STAFF_ISSUE_PAGE, null, parameters);
+		try {
+			winUser.doModal();
+		} catch (SuspendNotAllowedException e) {
+			MessageUtil.fail("Fail: " + e);
+		}
+	}
+
+	/**
+	 * @return the issueService
+	 */
+	public final IIssueService getIssueService() {
+		return issueService;
+	}
+
+	/**
+	 * @param issueService
+	 *            the issueService to set
+	 */
+	public final void setIssueService(IIssueService issueService) {
+		this.issueService = issueService;
+	}
+
+	/**
+	 * @return the staffService
+	 */
+	public final IStaffService getStaffService() {
+		return staffService;
+	}
+
+	/**
+	 * @param staffService
+	 *            the staffService to set
+	 */
+	public final void setStaffService(IStaffService staffService) {
+		this.staffService = staffService;
+	}
+
+	/**
+	 * @return the issue
+	 */
+	public Issue getIssue() {
+		return issue;
+	}
+
+	/**
+	 * @param issue
+	 *            the issue to set
+	 */
+	public void setIssue(Issue issue) {
+		this.issue = issue;
+	}
+
+	/**
+	 * @return the staffList
+	 */
+	public final List<Staff> getStaffList() {
+		return staffList;
+	}
+
+	/**
+	 * @param staffList
+	 *            the staffList to set
+	 */
+	public final void setStaffList(List<Staff> staffList) {
+		this.staffList = staffList;
+	}
+
+	/**
+	 * @return the staff
+	 */
+	public final Staff getStaff() {
+		return staff;
+	}
+
+	/**
+	 * @param staff
+	 *            the staff to set
+	 */
+	public final void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+
+	/**
+	 * @return the issueList
+	 */
+	public List<Issue> getIssueList() {
+		return issueList;
+	}
+
+	/**
+	 * @param issueList
+	 *            the issueList to set
+	 */
+	public void setIssueList(List<Issue> issueList) {
+		this.issueList = issueList;
+	}
+
+	/**
+	 * @return the currentUser
+	 */
+	public Staff getCurrentUser() {
+		return currentUser;
+	}
+
+	/**
+	 * @param currentUser
+	 *            the currentUser to set
+	 */
+	public void setCurrentUser(Staff currentUser) {
+		this.currentUser = currentUser;
+	}
+
+	public static String getCreatedIssueListPage() {
+		return CREATED_ISSUE_LIST_PAGE;
+	}
+
+	public List<StaffIssue> getIssuesByCreator() {
+		return issuesByCreator;
+	}
+
+	public void setIssuesByCreator(List<StaffIssue> issuesByCreator) {
+		this.issuesByCreator = issuesByCreator;
+	}
+
+	public static String getAddIssuePage() {
+		return ADD_ISSUE_PAGE;
+	}
+
+	public UUID getStaffId() {
+		return staffId;
+	}
+
+	public void setStaffId(UUID staffId) {
+		this.staffId = staffId;
+	}
+
+	public static String getUpdateIssuePage() {
+		return UPDATE_ISSUE_PAGE;
+	}
+
+	public static String getUpdateCreatedIssuePage() {
+		return UPDATE_CREATED_ISSUE_PAGE;
+	}
+
+	public List<Issue> getOpenIssues() {
+		return openIssues;
+	}
+
+	public void setOpenIssues(List<Issue> openIssues) {
+		this.openIssues = openIssues;
+	}
+
+	/**
+	 * @return the documentService
+	 */
+	public IDocumentService getDocumentService() {
+		return documentService;
+	}
+
+	/**
+	 * @param documentService
+	 *            the documentService to set
+	 */
+	public void setDocumentService(IDocumentService documentService) {
+		this.documentService = documentService;
+	}
+
+	/**
+	 * @return the staffIssueService
+	 */
+	public IStaffIssueService getStaffIssueService() {
+		return staffIssueService;
+	}
+
+	/**
+	 * @param staffIssueService
+	 *            the staffIssueService to set
+	 */
+	public void setStaffIssueService(IStaffIssueService staffIssueService) {
+		this.staffIssueService = staffIssueService;
+	}
+
+	/**
+	 * @return the document
+	 */
+	public Document getDocument() {
+		return document;
+	}
+
+	/**
+	 * @param document
+	 *            the document to set
+	 */
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+
+	/**
+	 * @return the staffIssue
+	 */
+	public StaffIssue getStaffIssue() {
+		return staffIssue;
+	}
+
+	/**
+	 * @param staffIssue
+	 *            the staffIssue to set
+	 */
+	public void setStaffIssue(StaffIssue staffIssue) {
+		this.staffIssue = staffIssue;
+	}
+
+	/**
+	 * @return the media
+	 */
+	public Media getMedia() {
+		return media;
+	}
+
+	/**
+	 * @param media
+	 *            the media to set
+	 */
+	public void setMedia(Media media) {
+		this.media = media;
+	}
+
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * @param fileName
+	 *            the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public List<Staff> getStaffListBySelectedDept() {
+		return staffListBySelectedDept;
+	}
+
+	public void setStaffListBySelectedDept(List<Staff> staffListBySelectedDept) {
+		this.staffListBySelectedDept = staffListBySelectedDept;
+	}
+
+	public List<EStaffDepartment> getStaffDepts() {
+		return staffDepts;
+	}
+
+	public void setStaffDepts(List<EStaffDepartment> staffDepts) {
+		this.staffDepts = staffDepts;
+	}
+
+	public static Object getEstaffdepartment() {
+		return EStaffDepartment;
+	}
+
+	public EStaffDepartment getSelectedDept() {
+		return selectedDept;
+	}
+
+	public void setSelectedDept(EStaffDepartment selectedDept) {
+		this.selectedDept = selectedDept;
+	}
+
+	/**
+	 * @return the staffDept
+	 */
+	public EStaffDepartment getStaffDept() {
+		return staffDept;
+	}
+
+	/**
+	 * @param staffDept
+	 *            the staffDept to set
+	 */
+	public void setStaffDept(EStaffDepartment staffDept) {
+		this.staffDept = staffDept;
+	}
+
+	/**
+	 * @return the responseListPage
+	 */
+	public static String getResponseListPage() {
+		return RESPONSE_LIST_PAGE;
+	}
+
+	/**
+	 * @return the issuesByCreator2
+	 */
+	public List<Issue> getIssuesByCreator2() {
+		return issuesByCreator2;
+	}
+
+	/**
+	 * @param issuesByCreator2
+	 *            the issuesByCreator2 to set
+	 */
+	public void setIssuesByCreator2(List<Issue> issuesByCreator2) {
+		this.issuesByCreator2 = issuesByCreator2;
+	}
+
+	/**
+	 * @return the issuesByCreatorCurrentUser
+	 */
+	public Issue getIssuesByCreatorCurrentUser() {
+		return issuesByCreatorCurrentUser;
+	}
+
+	/**
+	 * @param issuesByCreatorCurrentUser
+	 *            the issuesByCreatorCurrentUser to set
+	 */
+	public void setIssuesByCreatorCurrentUser(Issue issuesByCreatorCurrentUser) {
+		this.issuesByCreatorCurrentUser = issuesByCreatorCurrentUser;
+	}
+
+	/**
+	 * @return the findIssuesByCreator
+	 */
+	public List<StaffIssue> getFindIssuesByCreator() {
+		return findIssuesByCreator;
+	}
+
+	/**
+	 * @param findIssuesByCreator
+	 *            the findIssuesByCreator to set
+	 */
+	public void setFindIssuesByCreator(List<StaffIssue> findIssuesByCreator) {
+		this.findIssuesByCreator = findIssuesByCreator;
+	}
+
+}

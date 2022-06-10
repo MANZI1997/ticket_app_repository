@@ -1,0 +1,108 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="listIssue" vflex="1"
+		border="none" width="100%" mode="embedded" sclass="body-window"
+		maximizable="false"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.IssueListVM')">
+		<!-- 		<auxhead> -->
+		<!-- 			<auxheader colspan="2" label="Staff List" -->
+		<!-- 				iconSclass="z-icon-user-circle-o" /> -->
+		<!-- 		</auxhead> -->
+
+		<include src="/adminPage.zul" />
+
+		<hbox align="right">
+
+			<textbox instant="true" cols="60"
+				onChange="@command('changeFilter')" value="@save(vm.keyword)"
+				sclass="form-control" placeholder=" enter keyword to search" />
+			<button label="Search" style="background:#81AC83;"
+				iconSclass="z-icon-search" onclick="@command('changeFilter')" />
+
+		</hbox>
+		<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+		</grid>
+
+		<grid model="@load(vm.issuesByRecipient)"
+			style="background:#81AC83;" mold="paging" pageSize="5">
+
+
+			<columns style="background:#81AC83;">
+
+			
+
+				<column label="SUBJECT" style="background:#81AC83;"
+					align="center" sort="auto(issueSubject)" />
+
+				<column label="DESCRIPTION" style="background:#81AC83;"
+					align="center" sort="auto(issueDescription)" />
+
+				<column label="DOCUMENT" style="background:#81AC83;"
+					align="center" sort="auto(issueDescription)" />
+
+				<column label="OPEN_DATE" style="background:#81AC83;"
+					align="center" sort="auto(issueOpenDate)" />
+
+				<column label="STATUS" style="background:#81AC83;"
+					align="center" sort="auto(issueStatus)" />
+
+				<column label="SENDER" style="background:#81AC83;"
+					align="center" sort="auto(issueStatus)" />
+
+				<column label="ACTIONS" style="background:#81AC83;"
+					align="center" />
+			</columns>
+			<template name="model" var="item">
+				<row>
+					<label value="@load(item.issueId.issueSubject)" />
+					<label value="@load(item.issueId.issueDescription)" />
+					<label
+						value="@load(item.issueId.document.docContenName)" />
+					<label value="@load(item.issueOpenDate)" />
+					<label value="@load(item.issueStatus)" />
+					<label
+						value="@load(item.issueId.issueCreator.firstName)" />
+
+
+					<div class="pull_right">
+						<menubar sclass="action-menubar">
+							<menu sclass="action-menu" label="Manage">
+								<menupopup>
+									<zk>
+
+
+										<menuitem label="Respond"
+											tooltiptext="Reply issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('issueResponse', staffIssue=item)"
+											disabled="@load(item.issueRecipient.staffId eq vm.staffCurrent.staffId?'false':'true')" />
+										<menuitem
+											label=" View Response" tooltiptext="Reply issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('viewResponseByIssueCreatorList', staffIssue=item)"
+											visible="@load(item.issueRecipient.staffId eq vm.staffCurrent.staffId and item.issueStatus eq 'RESENT' or item.issueStatus eq 'RESPONDED'?'true':'false')" />
+										<menuitem label="view file"
+											tooltiptext="view file"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('downloadFile', issue=item.issueId)"
+											visible="@load(item.issueId.document eq null?'false':'true')" />
+
+
+									</zk>
+								</menupopup>
+							</menu>
+
+						</menubar>
+					</div>
+				</row>
+
+			</template>
+		</grid>
+
+
+	</window>
+</zk>

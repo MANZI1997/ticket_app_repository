@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+externalMigrateFromAuthorizationDatabase/isMigrated=true
+migrateFromAuthorizationDatabase/isMigrated=true
+repositories/f0274fa7caa6001c1477aa2b9b0c6344=f0274fa7caa6001c1477aa2b9b0c6344;http\://192.168.3.175/svn/ticket-app/;http\://192.168.3.175/svn/ticket-app/;branches;tags;trunk;true;f7549778-2200-504d-93e0-989eb99d34f3;http\://192.168.3.175/svn/ticket-app;;false;<http\://192.168.3.175\:80> VisualSVN Server;;0

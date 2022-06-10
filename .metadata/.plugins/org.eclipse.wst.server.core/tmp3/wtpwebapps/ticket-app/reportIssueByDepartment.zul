@@ -1,0 +1,194 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="reporByIssueDepartment" vflex="1"
+		border="none" width="100%" mode="embedded" sclass="body-window"
+		maximizable="false" contentStyle="Overflow:auto"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.ReportMainFormVM')">
+		
+<include src="/adminPage.zul"/>
+<include src="/reportPieChart.zul"/>
+<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+			<rows>
+			<row>
+			<textbox id="txt"
+						value="10" visible="false"/>
+			</row>
+				<row spans="1" align="right">
+					<hlayout>
+						<button id="addButton"
+							onClick="@command('reportPdfIssueDepartment')" label="Get in pdf" />
+					</hlayout>
+					<hlayout>
+						<button id="addButtonCh"
+							onClick="@command('reportPdfIssueDepartmentChart')" label="Get in pdf chart" visible="false"/>
+					
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
+		
+		<grid model="@load(vm.issueCreatorDepartmentBusiness)"  mold="paging" pageSize="5">
+
+		<columns visible="@load(vm.issueCreatorDepartmentBusiness eq null?'false':'true')">
+
+				<column label="DEPARTMENT CREATOR" align="center"
+                sort="auto(department)" />
+				
+				<column label="ISSUE_DESCRIPTION" align="center"
+					sort="auto(issueDescription)" />
+					
+				<column label="OPEN_DATE" align="center"
+					sort="auto(issueOpenDate)" />
+						
+			    <column label="ISSUE STATUS" align="center"
+					sort="auto(issueStatus)"/>
+					
+					<column label="STAFF-CREATOR" align="center"
+					sort="auto(issueStatus)"/>
+					
+					<column label="STAFF-RECIPIENT" align="center"
+					sort="auto(issueStatus)"/>
+				<column label="DEPARTMENT-RECIPIENT" align="center"
+					sort="auto(issueStatus)"/>
+			</columns>
+		
+			<template name="model" var="item">
+				<row>
+					<label value="@load(item.issueId.issueCreator.staffDepartment)" />
+					<label value="@load(item.issueId.issueDescription)" />
+					<label value="@load(item.issueOpenDate)" />
+				 <label value="@load(item.issueStatus)" />
+				 <label value="@load(item.issueId.issueCreator.firstName)" />
+				  <label value="@load(item.issueRecipient.firstName)" />
+				  <label value="@load(item.issueRecipient.staffDepartment)" />
+
+				</row>
+			</template>
+		</grid>
+
+<grid model="@load(vm.issueCreatorDepartmentDevelopment)"  mold="paging" pageSize="5">
+
+			<columns visible="@load(vm.issueCreatorDepartmentDevelopment eq null?'false':'true')">
+
+				<column label="DEPARTMENT CREATOR" align="center"
+					sort="auto(department)" />
+				
+				<column label="ISSUE_DESCRIPTION" align="center"
+					sort="auto(issueDescription)" />
+					
+				<column label="OPEN_DATE" align="center"
+					sort="auto(issueOpenDate)" />
+						
+			    <column label="ISSUE STATUS" align="center"
+					sort="auto(issueStatus)"/>
+					
+					<column label="STAFF-CREATOR" align="center"
+					sort="auto(issueStatus)"/>
+					
+					<column label="STAFF-RECIPIENT" align="center"
+					sort="auto(issueStatus)"/>
+				<column label="DEPARTMENT-RECIPIENT" align="center"
+					sort="auto(issueStatus)"/>
+			</columns>
+			
+			<template name="model" var="item">
+				<row>
+					<label value="@load(item.issueId.issueCreator.staffDepartment)" />
+					<label value="@load(item.issueId.issueDescription)" />
+					<label value="@load(item.issueOpenDate)" />
+				 <label value="@load(item.issueStatus)" />
+				 <label value="@load(item.issueId.issueCreator.firstName)" />
+				  <label value="@load(item.issueRecipient.firstName)" />
+				  <label value="@load(item.issueRecipient.staffDepartment)" />
+
+				</row>
+			</template>
+		</grid>
+
+<grid model="@load(vm.issueCreatorDepartmentInfrastructure)"  mold="paging" pageSize="5">
+
+			<columns visible="@load(vm.issueCreatorDepartmentInfrastructure eq null?'false':'true')" >
+
+				<column label="DEPARTMENT CREATOR" align="center"
+					sort="auto(department)" />
+				
+				<column label="ISSUE_DESCRIPTION" align="center"
+					sort="auto(issueDescription)" />
+					
+				<column label="OPEN_DATE" align="center"
+					sort="auto(issueOpenDate)" />
+						
+			    <column label="ISSUE STATUS" align="center"
+					sort="auto(issueStatus)"/>
+					
+					<column label="STAFF-CREATOR" align="center"
+					sort="auto(issueStatus)"/>
+					
+					<column label="STAFF-RECIPIENT" align="center"
+					sort="auto(issueStatus)"/>
+				<column label="DEPARTMENT-RECIPIENT" align="center"
+					sort="auto(issueStatus)"/>
+			</columns>
+		
+			<template name="model" var="item">
+				<row>
+					<label value="@load(item.issueId.issueCreator.staffDepartment)" />
+					<label value="@load(item.issueId.issueDescription)" />
+					<label value="@load(item.issueOpenDate)" />
+				 <label value="@load(item.issueStatus)" />
+				 <label value="@load(item.issueId.issueCreator.firstName)" />
+				  <label value="@load(item.issueRecipient.firstName)" />
+				  <label value="@load(item.issueRecipient.staffDepartment)" />
+
+				</row>
+			</template>
+		</grid>
+		
+		<grid model="@load(vm.issueCreatorDepartmentOperation)"  mold="paging" pageSize="5">
+
+			<columns visible="@load(vm.issueCreatorDepartmentOperation eq null?'false':'true')">
+
+				<column label="DEPARTMENT CREATOR" align="center"
+					sort="auto(department)" />
+				
+				<column label="ISSUE_DESCRIPTION" align="center"
+					sort="auto(issueDescription)" />
+					
+				<column label="OPEN_DATE" align="center"
+					sort="auto(issueOpenDate)" />
+						
+			    <column label="ISSUE STATUS" align="center"
+					sort="auto(issueStatus)"/>
+					
+					<column label="STAFF-CREATOR" align="center"
+					sort="auto(issueStatus)"/>
+					
+					<column label="STAFF-RECIPIENT" align="center"
+					sort="auto(issueStatus)"/>
+				<column label="DEPARTMENT-RECIPIENT" align="center"
+					sort="auto(issueStatus)"/>
+			</columns>
+		
+		
+			<template name="model" var="item">
+				<row>
+					<label value="@load(item.issueId.issueCreator.staffDepartment)" />
+					<label value="@load(item.issueId.issueDescription)" />
+					<label value="@load(item.issueOpenDate)" />
+				 <label value="@load(item.issueStatus)" />
+				 <label value="@load(item.issueId.issueCreator.firstName)" />
+				  <label value="@load(item.issueRecipient.firstName)" />
+				  <label value="@load(item.issueRecipient.staffDepartment)" />
+
+				</row>
+			</template>
+		</grid>
+	
+
+	</window>
+	
+</zk>

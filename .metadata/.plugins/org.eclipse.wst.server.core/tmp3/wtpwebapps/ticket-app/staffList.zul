@@ -1,0 +1,106 @@
+<?page title="staff lists" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="list" vflex="1"
+		border="none" width="100%" mode="embedded"
+		sclass="body-window" maximizable="false"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.StaffListVM')">
+	<auxhead> 
+		<auxheader colspan="2" label="Staff List"
+				iconSclass="z-icon-user-circle-o" /> 
+		</auxhead> 
+		
+
+<include src="/adminPage.zul"/>
+<hbox align="right">
+           
+			<textbox instant="true" cols="60"
+				onChange="@command('changeFilter')" value="@save(vm.keyword)"
+				sclass="form-control" placeholder=" enter keyword to search" />
+				<button label="Search" style="background:#81AC83;"
+				iconSclass="z-icon-search" onclick="@command('changeFilter')" />
+
+		</hbox>
+		<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row spans="1" align="right">
+					<hlayout>
+						<button id="addButton"
+							onClick="@command('addNew')" style="background:#81AC83;" label="Add New" />
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
+		<grid model="@load(vm.listOfStaff)" mold="paging"
+			pageSize="5">
+
+			<columns style="background:#81AC83;">
+				<column label="Staff Id" style="background:#81AC83;" align="center"
+					sort="auto(staffId)" />
+					<column label="First name" style="background:#81AC83;" align="center"
+					sort="auto(firstName)" />
+
+				<column label="Last Name" style="background:#81AC83;" align="center"
+					sort="auto(lastName)" />
+				<column label="Phone number" style="background:#81AC83;" align="center"
+					sort="auto(phoneNumber)" />
+				<column label="Email" style="background:#81AC83;" align="center" sort="auto(email)" />
+				<column label="Department" style="background:#81AC83;" align="center"
+					sort="auto(department)" />
+				<column label="Gender" style="background:#81AC83;" align="center"
+					sort="auto(gender)" />
+				<column label="Role" style="background:#81AC83;" align="center" sort="auto(role)" />
+				<column label="Status" style="background:#81AC83;" align="center" sort="auto(status)" />
+				<column label="Username" style="background:#81AC83;" align="center" sort="auto(username)" />
+				<column label="Password" style="background:#81AC83;" align="center" sort="auto(password)" />
+				<column label="Actions" style="background:#81AC83;" align="center" />
+
+			</columns>
+			<template name="model" var="item">
+				<row>
+					<label value="@load(item.staffId)" />
+					<label value="@load(item.firstName)" />
+					<label value="@load(item.lastName)" />
+					<label value="@load(item.phoneNumber)" />
+					<label value="@load(item.email)" />
+					<label value="@load(item.staffDepartment)" />
+					<label value="@load(item.gender)" />
+					<label value="@load(item.role)" />
+					<label value="@load(item.status)" />
+					<label value="@load(item.username)" />
+					<label value="@load(item.password)" />
+					
+					<div class="pull_right">
+						<menubar sclass="action-menubar">
+							<menu sclass="action-menu" label="Manage">
+								<menupopup>
+									<zk>
+
+										<menuitem label="Delete"
+											tooltiptext="Delete Staff"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('deleteStaff', staff=item)" />
+
+										<menuitem label="Update"
+											tooltiptext="Update Staff"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('updateStaffButton', staff=item)" />
+
+									</zk>
+								</menupopup>
+							</menu>
+
+						</menubar>
+					</div>
+
+
+				</row>
+			</template>
+		</grid>
+
+
+	</window>
+</zk>

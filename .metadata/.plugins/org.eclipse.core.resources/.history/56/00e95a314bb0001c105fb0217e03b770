@@ -1,0 +1,58 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<?link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet"?>
+
+	<?link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"?>
+	
+	<?link rel="stylesheet" href="assets/css/style.css"?>
+
+<zk>
+<window id="loginWin" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.ticket.viewmodel.LoginVM')" title="Staff" border="normal">
+    <html>
+    <head>
+    
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"></link>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    </head>
+     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <div class="container-fluid">
+    <b><a class="navbar-brand" href="#">E-TICKETING</a></b>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Home
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="issueList.zul">Issues</a>
+        </li>
+<!--         <li class="nav-item"> -->
+<!--           <a class="nav-link" href="issueList.zul">Total issues</a> -->
+<!--         </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="saveIssue.zul">Create</a>
+        </li>
+<!--         <li class="nav-item"> -->
+<!--           <a class="nav-link" href="staffList.zul">Users</a> -->
+<!--         </li> -->
+          <li class="nav-item">
+          <a class="nav-link" href="login.zul">Logout</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-sm-2" type="text" placeholder="Search">
+        <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button></input>
+      </form>
+    </div>
+  </div>
+</nav>
+    </html>
+ </window> 
+</zk>
+<?script src="js/jquery.min.js"></script?>
+  <?script src="js/popper.js"></script?>
+  <?script src="js/bootstrap.min.js"></script?>
+  <?script src="js/main.js"></script?>

@@ -1,0 +1,476 @@
+package com.ticket.login;
+
+
+import org.slf4j.Logger;
+
+import org.slf4j.LoggerFactory;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.ContextParam;
+import org.zkoss.bind.annotation.ContextType;
+import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zul.Messagebox;
+
+import com.ticket.domain.EStaffRole;
+import com.ticket.domain.Staff;
+import com.ticket.service.IStaffService;
+
+@VariableResolver(DelegatingVariableResolver.class)
+public class LoginAuthenticationVM {
+
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginAuthenticationVM.class);
+
+	@WireVariable(IStaffService.NAME)
+	private transient IStaffService staffService;
+
+	private static final String ADMIN_PAGE = "/adminPage.zul";
+
+
+	private static final String LOGIN_PAGE = "/login.zul";
+
+	/** The Constant ACCESS_DENIED_STR. */
+	private static final String ACCESS_DENIED_STR = "ACCESS DENIED: ";
+
+	private Staff staff = new Staff();
+
+	private Staff loggedInStaff;
+
+	/** The username. */
+	private String username;
+
+	/** The password. */
+	private String password;
+	
+    Staff staffCurrent = new Staff();
+	
+    private String pass = staffCurrent.getPassword(); //get old password from user
+    
+    private String passcode=staff.getPassword();
+
+     private String newPass = ""; // get new password from user
+     private String conNewPass = ""; // confirm new password from user
+
+	/** The re. */
+	private Boolean rememberMe = Boolean.TRUE;
+
+	/** The message. */
+	private String message = "";
+
+	private Boolean homeMenu;
+
+	private Boolean issuesMenu;
+
+	private Boolean totalIssuesMenu;
+
+	private Boolean createIssueMenu;
+
+	private Boolean userMenu;
+	
+	private Boolean changePassword;
+
+	/** The error. */
+	private boolean error = false;
+
+	
+	@Init
+	public void init(@ContextParam(ContextType.VIEW) final Component comp) throws Exception {
+
+		Session session = Sessions.getCurrent();
+		staffCurrent = (Staff) session.getAttribute("user");
+
+		if ((staffCurrent != null) && (staffCurrent.getRole().equals(EStaffRole.ADMIN))) {
+			homeMenu = Boolean.TRUE;
+			issuesMenu = Boolean.TRUE;
+
+			totalIssuesMenu = Boolean.TRUE;
+
+			createIssueMenu = Boolean.TRUE;
+
+			userMenu = Boolean.TRUE;
+			
+			changePassword=Boolean.FALSE;
+			
+
+		}
+		if ((staffCurrent != null) && (staffCurrent.getRole().equals(EStaffRole.STAFF))) {
+			homeMenu = Boolean.TRUE;
+			issuesMenu = Boolean.TRUE;
+
+			totalIssuesMenu = Boolean.FALSE;
+
+			createIssueMenu = Boolean.TRUE;
+
+			userMenu = Boolean.FALSE;
+			
+			changePassword=Boolean.TRUE;
+
+		}
+
+	}
+
+	@Command
+	@NotifyChange({ "message", "error" })
+	public void loginUsernameAndPassword() {
+
+		if (username == null) {
+			setError(true);
+			this.message = "Login failed: Username can not be null. Try again!";
+			return;
+		}
+
+		if (password == null) {
+			setError(true);
+			this.message = "Login failed: Password can not be null. Try again!";
+			return;
+		}
+		try {
+
+			//staff = getUserLoggedInFromSession();
+			staff=staffService.login(username, password);
+			String uname = staff.getUsername();
+			String pass = staff.getPassword();
+			EStaffRole staffRole = staff.getRole();
+
+			if (username.equals(uname) && password.equals(pass)) {
+
+				org.zkoss.zk.ui.Session session = Sessions.getCurrent();
+				session.setAttribute("user", staff);
+					Executions.sendRedirect(ADMIN_PAGE);
+			} else {
+				Clients.showNotification("Invalid Credentials!");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+//	public Staff getUserLoggedInFromSession() {
+//		loggedInStaff = staffService.findByUsername(username);
+//		return loggedInStaff;
+//	}
+
+	/**
+	 * Logout.
+	 */
+	@NotifyChange({ "currentUser" })
+	@Command
+	public void logout() {
+		try {
+			// staffService.logout(username);
+			// currentUser = staffService.login(username, password);
+			Executions.sendRedirect(LOGIN_PAGE);
+
+		} catch (Exception e) {
+			setError(true);
+			if (e.getCause() != null) {
+				this.message = ACCESS_DENIED_STR + e.getCause().getMessage();
+			} else {
+				this.message = ACCESS_DENIED_STR + e.getMessage();
+			}
+		}
+	}
+	
+  @Command
+  @NotifyChange({ "staffCurrent" })
+  public boolean changePassword(){
+	 
+		  int n = 3;
+		  while (n-- > 0) {
+		    if(pass.equals(passcode)) {
+		        if (newPass.equals(conNewPass)) {
+		        	passcode = newPass;
+		            // password changed
+		            return true; 
+		        }
+		        else {
+		            // wrong confirmation.. password not changed
+		            return false;
+		        }
+		    }
+		    else {
+		        // tell user to enter the correct old password
+		        pass =staffCurrent.getPassword(); // ask user for old password again
+		    }
+		  }
+		  // show error message that user entered the old password 3 times incorrectly
+		  // and return false
+		  return false;
+	}
+
+
+	/**
+	 * Checks if is error.
+	 *
+	 * @return true, if is error
+	 */
+	public boolean isError() {
+		return error;
+	}
+
+	/**
+	 * Sets the error.
+	 *
+	 * @param error
+	 *            the new error
+	 */
+	public void setError(final boolean error) {
+		this.error = error;
+	}
+
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * Gets the username.
+	 *
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
+
+	/**
+	 * Sets the username.
+	 *
+	 * @param username
+	 *            the new username
+	 */
+	public void setUsername(final String username) {
+		this.username = username;
+	}
+
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * Sets the password.
+	 *
+	 * @param password
+	 *            the new password
+	 */
+	public void setPassword(final String password) {
+		this.password = password;
+	}
+
+	/**
+	 * Gets the remember me.
+	 *
+	 * @return the remember me
+	 */
+	public Boolean getRememberMe() {
+		return rememberMe;
+	}
+
+	/**
+	 * Sets the remember me.
+	 *
+	 * @param rememberMe
+	 *            the new remember me
+	 */
+	public void setRememberMe(final Boolean rememberMe) {
+		this.rememberMe = rememberMe;
+	}
+
+	/**
+	 * @return the staff
+	 */
+	public Staff getStaff() {
+		return staff;
+	}
+
+	/**
+	 * @param staff
+	 *            the staff to set
+	 */
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+
+	/**
+	 * @return the staffCurrent
+	 */
+	public Staff getStaffCurrent() {
+		return staffCurrent;
+	}
+
+	/**
+	 * @param staffCurrent
+	 *            the staffCurrent to set
+	 */
+	public void setStaffCurrent(Staff staffCurrent) {
+		this.staffCurrent = staffCurrent;
+	}
+
+	/**
+	 * @return the homeMenu
+	 */
+	public Boolean getHomeMenu() {
+		return homeMenu;
+	}
+
+	/**
+	 * @param homeMenu
+	 *            the homeMenu to set
+	 */
+	public void setHomeMenu(Boolean homeMenu) {
+		this.homeMenu = homeMenu;
+	}
+
+	/**
+	 * @return the issuesMenu
+	 */
+	public Boolean getIssuesMenu() {
+		return issuesMenu;
+	}
+
+	/**
+	 * @param issuesMenu
+	 *            the issuesMenu to set
+	 */
+	public void setIssuesMenu(Boolean issuesMenu) {
+		this.issuesMenu = issuesMenu;
+	}
+
+	/**
+	 * @return the totalIssuesMenu
+	 */
+	public Boolean getTotalIssuesMenu() {
+		return totalIssuesMenu;
+	}
+
+	/**
+	 * @param totalIssuesMenu
+	 *            the totalIssuesMenu to set
+	 */
+	public void setTotalIssuesMenu(Boolean totalIssuesMenu) {
+		this.totalIssuesMenu = totalIssuesMenu;
+	}
+
+	/**
+	 * @return the createIssueMenu
+	 */
+	public Boolean getCreateIssueMenu() {
+		return createIssueMenu;
+	}
+
+	/**
+	 * @param createIssueMenu
+	 *            the createIssueMenu to set
+	 */
+	public void setCreateIssueMenu(Boolean createIssueMenu) {
+		this.createIssueMenu = createIssueMenu;
+	}
+
+	/**
+	 * @return the userMenu
+	 */
+	public Boolean getUserMenu() {
+		return userMenu;
+	}
+
+	/**
+	 * @param userMenu
+	 *            the userMenu to set
+	 */
+	public void setUserMenu(Boolean userMenu) {
+		this.userMenu = userMenu;
+	}
+
+	/**
+	 * @return the loggedInStaff
+	 */
+	public Staff getLoggedInStaff() {
+		return loggedInStaff;
+	}
+
+	/**
+	 * @param loggedInStaff
+	 *            the loggedInStaff to set
+	 */
+	public void setLoggedInStaff(Staff loggedInStaff) {
+		this.loggedInStaff = loggedInStaff;
+	}
+
+	public Boolean getChangePassword() {
+		return changePassword;
+	}
+
+	public void setChangePassword(Boolean changePassword) {
+		this.changePassword = changePassword;
+	}
+
+	/**
+	 * @return the pass
+	 */
+	public String getPass() {
+		return pass;
+	}
+
+	/**
+	 * @param pass the pass to set
+	 */
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	/**
+	 * @return the newPass
+	 */
+	public String getNewPass() {
+		return newPass;
+	}
+
+	/**
+	 * @param newPass the newPass to set
+	 */
+	public void setNewPass(String newPass) {
+		this.newPass = newPass;
+	}
+
+	/**
+	 * @return the conNewPass
+	 */
+	public String getConNewPass() {
+		return conNewPass;
+	}
+
+	/**
+	 * @param conNewPass the conNewPass to set
+	 */
+	public void setConNewPass(String conNewPass) {
+		this.conNewPass = conNewPass;
+	}
+
+	/**
+	 * @return the passcode
+	 */
+	
+	
+
+	/**
+	 * @return the gotissuesMenu
+	 */
+
+}

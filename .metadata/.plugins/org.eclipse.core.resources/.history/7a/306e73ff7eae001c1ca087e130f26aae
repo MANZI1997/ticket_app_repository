@@ -1,0 +1,23 @@
+<?page title="staff page" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<menubar>
+	    <menu label="Issue">
+	        <menupopup>
+	            <menuitem label="opend"/>
+	            <menuitem label="on process"/>
+	        </menupopup>
+	    </menu>
+	    <menu label="Help">
+	        <menupopup>
+	            <menuitem label="Index"/>
+	            <menu label="About">
+	                <menupopup>
+	                    <menuitem label="About ZK"/>
+	                    <menuitem label="About Potix"/>
+	                </menupopup>
+	            </menu>
+	        </menupopup>
+	    </menu>
+	</menubar>
+</zk>
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Encapsulate field &apos;com.ticket.viewmodel.AddIssueVM.editStatus&apos; in &apos;com.ticket.viewmodel.AddIssueVM&apos;&#x0D;&#x0A;- Original project: &apos;ticket-app&apos;&#x0D;&#x0A;- Original element: &apos;com.ticket.viewmodel.AddIssueVM.editStatus&apos;&#x0D;&#x0A;- Getter method name: &apos;getEditStatus&apos;&#x0D;&#x0A;- Setter method name: &apos;setEditStatus&apos;&#x0D;&#x0A;- Field visibility: &apos;public&apos;&#x0D;&#x0A;- Use getter and setter methods in declaring type" comments="false" declaring="true" description="Encapsulate field &apos;editStatus&apos;" flags="589830" getter="getEditStatus" id="org.eclipse.jdt.ui.self.encapsulate" input="/src\/main\/java&lt;com.ticket.viewmodel{AddIssueVM.java[AddIssueVM^editStatus" insertion="64" setter="setEditStatus" stamp="1652176850287" version="1.0" visibility="1"/>
+</session>

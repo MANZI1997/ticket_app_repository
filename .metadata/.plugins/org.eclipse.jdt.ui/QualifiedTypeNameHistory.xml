@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.zkoss.zk.ui.select.annotation.WireVariable"/>
+<fullyQualifiedTypeName name="org.zkoss.bind.annotation.Command"/>
+<fullyQualifiedTypeName name="org.springframework.context.annotation.DependsOn"/>
+<fullyQualifiedTypeName name="org.zkoss.zul.Textbox"/>
+<fullyQualifiedTypeName name="org.zkoss.zk.ui.select.annotation.Wire"/>
+<fullyQualifiedTypeName name="org.zkoss.zul.Label"/>
+<fullyQualifiedTypeName name="org.zkoss.zk.ui.Executions"/>
+<fullyQualifiedTypeName name="org.jfree.chart.util.TextUtils"/>
+<fullyQualifiedTypeName name="com.ticket.service.IStaffService"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.util.Locale"/>
+<fullyQualifiedTypeName name="java.text.NumberFormat"/>
+<fullyQualifiedTypeName name="com.ticket.domain.Issue"/>
+<fullyQualifiedTypeName name="java.lang.Boolean"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="org.springframework.util.StringUtils"/>
+<fullyQualifiedTypeName name="org.apache.commons.lang.StringUtils"/>
+<fullyQualifiedTypeName name="javax.persistence.OneToMany"/>
+<fullyQualifiedTypeName name="javax.persistence.ManyToOne"/>
+<fullyQualifiedTypeName name="javax.persistence.CascadeType"/>
+<fullyQualifiedTypeName name="javax.mail.internet.MimeMessage"/>
+<fullyQualifiedTypeName name="javax.persistence.Entity"/>
+<fullyQualifiedTypeName name="javax.persistence.Id"/>
+<fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
+<fullyQualifiedTypeName name="javax.persistence.GenerationType"/>
+<fullyQualifiedTypeName name="javax.persistence.OneToOne"/>
+<fullyQualifiedTypeName name="javax.persistence.FetchType"/>
+<fullyQualifiedTypeName name="javax.persistence.JoinColumn"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="org.zkoss.zk.ui.Execution"/>
+<fullyQualifiedTypeName name="com.ticket.domain.Staff"/>
+<fullyQualifiedTypeName name="com.ticket.dao.IStaffDao"/>
+<fullyQualifiedTypeName name="com.ticket.domain.SendEmail"/>
+<fullyQualifiedTypeName name="org.apache.shiro.util.StringUtils"/>
+<fullyQualifiedTypeName name="antlr.StringUtils"/>
+<fullyQualifiedTypeName name="org.apache.commons.lang3.StringUtils"/>
+<fullyQualifiedTypeName name="org.zkoss.zul.Messagebox"/>
+<fullyQualifiedTypeName name="com.ticket.domain.EStaffStatus"/>
+</qualifiedTypeNameHistroy>

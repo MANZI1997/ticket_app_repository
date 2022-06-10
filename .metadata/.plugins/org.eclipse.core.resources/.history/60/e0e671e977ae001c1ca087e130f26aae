@@ -1,0 +1,22 @@
+<?page title="staff page" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="staff page" border="normal">
+<menubar autodrop="true">
+    <menu label="Car">
+        <menupopup>
+            <menu label="New">
+                <menupopup>
+                    <menuitem label="Small Car" />
+                    <menuitem label="Mediem Car" />
+                    <menuitem label="Large Car" />
+                </menupopup>
+            </menu>
+            <menuitem label="Search" />
+        </menupopup>
+    </menu>
+...
+</menubar>
+</window>
+
+</zk>
+

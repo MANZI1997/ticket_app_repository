@@ -1,0 +1,126 @@
+/**
+Mar 7, 2022
+HP
+2022
+ * 
+ */
+package com.ticket.dao;
+
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ticket.domain.Issue;
+import com.ticket.domain.Response;
+import com.ticket.domain.Staff;
+
+/**
+ * @author HP
+ *
+ */
+@Repository(IResponseDao.NAME)
+public class ResponseDaoImpl implements IResponseDao {
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	/**
+	 * @return the sessionFactory
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+
+	/**
+	 * @param sessionFactory the sessionFactory to set
+	 */
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+	
+
+
+	/* (non-Javadoc)
+	 * @see com.ticket.dao.IResponseDao#addResponse(com.ticket.domain.Response)
+	 */
+	@Override
+	public void addResponse(Response response) {
+		sessionFactory.getCurrentSession().save(response);
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.ticket.dao.IResponseDao#getResponsebyId(int)
+	 */
+	@Override
+	public Response getResponsebyId(int feedback_id) {
+
+		Response response=(Response) sessionFactory.getCurrentSession().get(Response.class,feedback_id);
+		return response;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.ticket.dao.IResponseDao#updateResponse(com.ticket.domain.Response)
+	 */
+	@Override
+	public void updateResponse(Response response) {
+		sessionFactory.getCurrentSession().update(response);
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.ticket.dao.IResponseDao#deleteResponse(com.ticket.domain.Response)
+	 */
+	@Override
+	public void deleteResponse(Response response) {
+		sessionFactory.getCurrentSession().delete(response);
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.ticket.dao.IResponseDao#deleteAll()
+	 */
+	@Override
+	public void deleteAll() {
+		List<Response> responseList = findAllResponse();
+		for (Response response : responseList) {
+			deleteResponse(response);
+			}		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.ticket.dao.IResponseDao#findAllResponse()
+	 */
+	@Override
+	public List<Response> findAllResponse() {
+		@SuppressWarnings("unchecked")
+		List<Response> response=(List<Response>) sessionFactory.getCurrentSession().createQuery("from Response").list();
+		return response;
+	}
+	@Override
+	public List<Response> findResponseByIssueCreator(final Staff staffId) {
+		// TODO Auto-generated method stub
+		try {
+			@SuppressWarnings("unchecked")
+			List<Response> allResponses = (List<Response>) sessionFactory.getCurrentSession().createQuery("from Response r, Issue i where r.issue = i.issueId and  i.issueCreator= :issueCreator").setParameter("issueCreator",staffId).list();
+			return allResponses;
+		}catch (Exception e) {
+			throw e;
+			
+		}
+ 
+	}
+
+
+
+
+
+	}
+

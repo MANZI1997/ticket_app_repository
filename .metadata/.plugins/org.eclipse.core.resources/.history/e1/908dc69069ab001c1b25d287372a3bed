@@ -1,0 +1,82 @@
+package com.ticket.viewmodel;
+import org.zkoss.bind.annotation.Command;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.select.annotation.VariableResolver;
+import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zul.Messagebox;
+
+import com.ticket.domain.Staff;
+import com.ticket.service.IStaffService;
+
+@VariableResolver(DelegatingVariableResolver.class)
+public class LoginVM {
+	@WireVariable(IStaffService.NAME)
+	private IStaffService staffService;
+	private Staff staff = new Staff();
+	private static final String ADMIN_PAGE = "/adminPage.zul";
+	private static final String STAFF_PAGE = "/staffPage.zul";
+	@Command("checkLogin")
+	public void checkUsenameAndPasword() {
+
+		for (Staff staffList : staffService.findAllStaff())
+
+		{
+
+			if ((staffList.getUsername().equals(staff.getUsername())) && (staffList.getPassword().equals(staff.getPassword()))
+			&& (staffList.getRole().equals(staff.getRole().ADMIN)))
+
+			{
+				Messagebox.show(staffList.getUsername() + "login successfull" );
+				Executions.sendRedirect(ADMIN_PAGE);
+			}
+
+			else if ((staffList.getUsername().equals(staff.getUsername())) && (staffList.getPassword().equals(staff.getPassword()))
+					&& (staffList.getRole().equals(staff.getRole().STAFF)))
+
+			{
+				Messagebox.show(staffList.getUsername() + "login successful" );
+				 Executions.sendRedirect(STAFF_PAGE);
+
+			}
+
+			else {
+			
+			 Messagebox.show(staffList.getUsername()+"&&"+staffList.getPassword()+"&3&"+staff.getUsername()+"&&"+staff.getPassword());
+			
+			//Executions.sendRedirect(LOGIN_PAGE);
+			}
+		}
+
+	}
+
+	/**
+	 * @return the staffService
+	 */
+	public IStaffService getStaffService() {
+		return staffService;
+	}
+
+	/**
+	 * @param staffService
+	 *            the staffService to set
+	 */
+	public void setStaffService(IStaffService staffService) {
+		this.staffService = staffService;
+	}
+
+	/**
+	 * @return the staff
+	 */
+	public Staff getStaff() {
+		return staff;
+	}
+
+	/**
+	 * @param staff
+	 *            the staff to set
+	 */
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+}

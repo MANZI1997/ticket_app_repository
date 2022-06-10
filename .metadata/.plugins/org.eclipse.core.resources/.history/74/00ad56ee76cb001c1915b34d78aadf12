@@ -1,0 +1,105 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="listCreatedIssuebyRecipient" vflex="1"
+		border="none" width="100%" mode="embedded" sclass="body-window"
+		maximizable="false" contentStyle="Overflow:auto"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.AddIssueVM')">
+		<!-- 		<auxhead> -->
+		<!-- 			<auxheader colspan="2" label="Staff List" -->
+		<!-- 				iconSclass="z-icon-user-circle-o" /> -->
+		<!-- 		</auxhead> -->
+
+<include src="/adminPage.zul"/>
+
+<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row spans="1" align="right">
+					<hlayout>
+						<button id="addButton"
+							onClick="@command('addNew')" label="Add New" style="background:#81AC83; />
+					</hlayout>
+				</row>
+			</rows>
+		</grid>
+
+		<grid model="@load(vm.issuesByCreator)" mold="paging" pageSize="5">
+
+			<columns>
+
+				<column label="SUBJECT" align="center"
+					sort="auto(issueSubject)" style="background:#81AC83;" />
+				
+				<column label="DESCRIPTION" align="center"
+					sort="auto(issueDescription)" style="background:#81AC83;" />
+					
+					<column label="FILE" align="center"
+					sort="auto(issueDescription)" style="background:#81AC83;" />
+
+				<column label="OPEN_DATE" align="center"
+					sort="auto(issueOpenDate)" style="background:#81AC83;" />
+						
+			    <column label="ISSUE STATUS" align="center"
+					sort="auto(issueStatus)" style="background:#81AC83;"/>
+					
+					<column label="STAFF-RECIPIENT -NAME" align="center"
+					sort="auto(issueStatus)" style="background:#81AC83;"/>
+					
+					<column label="STAFF-RECIPIENT -STATUS" align="center"
+					sort="auto(issueStatus)" style="background:#81AC83;"/>
+				
+<column label="ACTIONS" align="center" />
+			</columns>
+			<template name="model" var="item">
+				<row>
+					<label value="@load(item.issueId.issueSubject)" />
+					<label value="@load(item.issueId.issueDescription)" />
+					<label value="@load(item.issueId.document.docContenName)" />
+				 <label value="@load(item.issueOpenDate)" />
+				 <label value="@load(item.issueStatus)" />
+				  <label value="@load(item.issueRecipient.firstName)" />
+				  <label value="@load(item.issueRecipient.status)" />
+
+					<div class="pull_right">
+						<menubar sclass="action-menubar">
+							<menu sclass="action-menu" label="Manage">
+								<menupopup>
+									<zk>
+
+										<menuitem label="Delete"
+											tooltiptext="Delete Issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('deleteIssue', staffIssue=item)" />
+
+										<menuitem label="Update"
+											tooltiptext="Update Issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('updateIssueButton', staffIssue=item)" />
+                                        
+                                         <menuitem label="Wiew response"
+											tooltiptext="Wiew Response"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('wiewResponseButton', staffIssue=item)" 
+ visible="@load(item.issueStatus eq 'SENT' or item.issueStatus eq 'MOVED' ?'false':'true')" />
+                                            <menuitem label="Forward Issue"
+											tooltiptext="Forward Issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('forwardIssueButton', staffIssue=item)" 
+ visible="@load(item.issueStatus eq 'SENT' or item.issueStatus eq 'MOVED' ?'true':'false')" />
+									</zk>
+								</menupopup>
+							</menu>
+
+						</menubar>
+					</div>
+
+
+				</row>
+			</template>
+		</grid>
+
+	</window>
+</zk>

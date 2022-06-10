@@ -1,0 +1,11 @@
+1650812947128	Encapsulate field 'status'
+1650813265758	Encapsulate field 'changePassword'
+1650835641590	Delete element
+1650870945597	Encapsulate field 'email'
+1651023934938	Encapsulate field 'staffDb'
+1651034151995	Encapsulate field 'passcode'
+1651135820353	Rename resource 'forgotPassword..zul'
+1651157021235	Encapsulate field 'token'
+1651158103778	Delete element
+1651216381498	Encapsulate field 'tempList'
+1651216390704	Encapsulate field 'keyword'

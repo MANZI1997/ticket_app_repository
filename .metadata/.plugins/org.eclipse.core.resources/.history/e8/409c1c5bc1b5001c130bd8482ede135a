@@ -1,0 +1,108 @@
+/**
+Mar 7, 2022
+HP
+2022
+ * 
+ */
+package com.ticket.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ticket.dao.IResponseDao;
+import com.ticket.dao.ResponseDaoImpl;
+import com.ticket.domain.Response;
+import com.ticket.domain.Staff;
+
+/**
+ * @author HP
+ *
+ */
+@Service(IResponseService.NAME)
+public class ResponseServiceImpl implements IResponseService {
+	// auto wired the data access object in order to access data persisted into database
+	@Autowired
+	private IResponseDao dao;
+	
+	public ResponseServiceImpl() {
+		dao=(IResponseDao) new ResponseDaoImpl();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.ticket.service.IResponseService#createResponse(com.ticket.domain.Response)
+	 */
+	@Transactional
+	@Override
+	public void createResponse(Response response) {
+		dao.addResponse(response);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.ticket.service.IResponseService#selectResponsebyId(int)
+	 */
+	@Transactional
+	@Override
+	public Response selectResponsebyId(int feedback_id) {
+		// TODO Auto-generated method stub
+		return dao.getResponsebyId(feedback_id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.ticket.service.IResponseService#updateResponse(com.ticket.domain.Response)
+	 */
+	@Transactional
+	@Override
+	public void updateResponse(Response response) {
+		dao.updateResponse(response);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.ticket.service.IResponseService#deleteResponse(com.ticket.domain.Response)
+	 */
+	@Transactional
+	@Override
+	public void deleteResponse(Response response) {
+		// TODO Auto-generated method stub
+		dao.deleteResponse(response);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.ticket.service.IResponseService#deleteAll()
+	 */
+	@Transactional
+	@Override
+	public void deleteAll() {
+		// TODO Auto-generated method stub
+		dao.deleteAll();		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.ticket.service.IResponseService#findAllResponse()
+	 */
+	@Transactional
+	@Override
+	public List<Response> findAllResponse() {
+		// TODO Auto-generated method stub
+		return dao.findAllResponse();
+	}
+
+	@Override
+	public List<Response> findResponseByIssueCreator(Staff staffId) {
+		// TODO Auto-generated method stub
+		return dao.findResponseByIssueCreator(staffId);
+	}
+
+
+
+	
+
+
+
+
+}

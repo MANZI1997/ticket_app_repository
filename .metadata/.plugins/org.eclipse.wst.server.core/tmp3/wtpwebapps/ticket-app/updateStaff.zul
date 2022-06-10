@@ -1,0 +1,95 @@
+
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window apply="org.zkoss.bind.BindComposer" id="updateEmp"
+		vflex="1" border="none" width="100%" mode="embedded"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.UpdateStaffVM')"
+		maximizable="false">
+<!-- 		 <auxhead> -->
+<!--             <auxheader colspan="2" label="Update Form" iconSclass="z-icon-user-circle-o"/> -->
+<!--         </auxhead> -->
+<include src="/adminPage.zul"/>
+       <grid class="col-sm-4">
+        <columns visible="false">
+            <column/>
+            <column/>
+        </columns>
+        
+        <rows>
+           <row id="staffFirstNameRow" style="background:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="FirstName"/>
+                <textbox id="staffFirstNameBox" value="@bind(vm.selectedStaff.firstName)" hflex="1" constraint="no empty"/>
+            </row>
+            <row id="staffLastNameRow" style="background:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="LastName"/>
+                <textbox id="staffLastNameBox" value="@bind(vm.selectedStaff.lastName)" hflex="1" constraint="no empty"/>
+            </row>
+            <row id="staffPhoneRow" style="background:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="Phone Number"/>
+                <textbox id="staffPhoneBox" value="@bind(vm.selectedStaff.phoneNumber)" hflex="1" constraint="no empty"/>
+            </row>
+            <row id="staffEmailRow" style="background:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="Email"/>
+                <textbox id="staffEmailBox" value="@bind(vm.selectedStaff.email)" hflex="1" placeholder="enter email"/>
+            </row>
+            
+            <row id="staffDeptRow" style="background:ECF3EC;">
+                 <label value="Department"/>
+                 <combobox sclass="required"
+		                readonly="true" autodrop="true" width="100%"
+						model="@load(vm.staffDepts)"
+						selectedItem="@bind(vm.selectedStaff.staffDepartment)">
+
+			      </combobox>
+            </row>
+               <row id="staffGenderRow" style="background:ECF3EC;">
+                 <label value="Gender"/>
+                 <combobox sclass="required"
+		                readonly="true" autodrop="true" width="100%"
+						model="@load(vm.genders)"
+						selectedItem="@bind(vm.selectedStaff.gender)">
+
+			      </combobox>
+            </row>
+               <row id="staffRoleRow" style="background:ECF3EC;">
+                 <label value="Staff Role"/>
+                 <combobox sclass="required"
+		                readonly="true" autodrop="true" width="100%"
+						model="@load(vm.staffRoles)"
+						selectedItem="@bind(vm.selectedStaff.role)">
+
+			      </combobox>
+            </row>
+                <row id="staffStatusRow" style="background:ECF3EC;">
+                 <label value="Staff Status"/>
+                 <combobox sclass="required"
+		                readonly="true" autodrop="true" width="100%"
+						model="@load(vm.eStatus)"
+						selectedItem="@bind(vm.selectedStaff.status)">
+
+			      </combobox>
+            </row>
+             <row id="staffusernameRow" style="background:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="Username"/>
+                <textbox id="staffUsernameBox" value="@bind(vm.selectedStaff.username)" hflex="1" placeholder="enter username"/>
+            </row>
+             <row id="staffpasswordRow" style="background:ECF3EC;">
+                <!-- constraint="no empty" -->
+                <label value="Password"/>
+                <textbox id="staffPassowrdBox" value="@bind(vm.selectedStaff.password)" hflex="1" placeholder="enter password"/>
+            </row>
+            <row spans="1" align="right">
+                <hlayout>
+                    <button id="editButton" onClick="@command('updateStaff')" style="background:#81AC83;" label="Update"/>
+                    <button id="cancelButton" onClick="@command('closeThis')"  style="background:#81AC83;" label="Cancel"/>
+                </hlayout>
+            </row>
+        </rows>
+    </grid>
+</window>
+</zk>

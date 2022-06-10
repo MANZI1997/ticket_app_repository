@@ -1,0 +1,103 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="new page title" id="responseList" vflex="1"
+		border="none" width="80%" mode="embedded" sizable="false"
+		sclass="body-window" contentStyle="Overflow:auto"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.ResponseListVM')">
+		<auxhead>
+			<auxheader colspan="2" label="Registration Form"
+				iconSclass="z-icon-user-circle-o" />
+		</auxhead>
+		<include src="/adminPage.zul" />
+		<grid model="@load(vm.listOfResponse)" mold="paging"
+			pageSize="5">
+
+			<columns style="background:#81AC83;">
+				<column label="ISSUE DESCRIPTION"
+					style="background:#81AC83;" align="center" />
+
+				<column label="RESPONSE ID" style="background:#81AC83;"
+					align="center" sort="auto(feedbackId)" />
+
+				<column label="RESPONSE DESCRIPTION"
+					style="background:#81AC83;" align="center" sort="auto(feedBack)" />
+
+				<column label="RESPONSE FILE"
+					style="background:#81AC83;" align="center" sort="auto(feedBack)" />
+
+				<column label="Date" style="background:#81AC83;"
+					align="center" sort="auto(closeDate)" />
+
+
+				<column label="RESPONDED BY ME(✅)"
+					style="background:#81AC83;" align="center" />
+				<column label="Actions" align="center" />
+
+
+			</columns>
+			<template name="model" var="each">
+				<row>
+					<label
+						value="@load(each.staffIssue.issueId.issueDescription)" />
+					<label value="@load(each.feedbackId)" />
+					<label value="@load(each.feedBack)" />
+
+					<label value="@load(each.document.docContenName)" />
+					<!--  <label
+						value="@load(each.feedBack ? null : each.feedBack)" />
+						<label value="@load(each.staff.firstName)" />-->
+
+					<label value="@load(each.respDate)" />
+
+					<label value='✅'
+						visible="@load(each.response eq null?'false':'true')" />
+
+
+
+					<div class="pull_right">
+						<menubar sclass="action-menubar">
+							<menu sclass="action-menu" label="Manage">
+								<menupopup>
+									<zk>
+
+										<menuitem label="Delete"
+											tooltiptext="Delete Response"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('deleteResponse' ,emp=each)" />
+
+										<menuitem label="Update"
+											tooltiptext="Update Response"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('updateResponseButton', response=each)" />
+
+										<menuitem label="Reply Response"
+											tooltiptext="Reply Response"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('replyResponseButton', response=each)"
+											visible="@load(each.response eq null?'true':'false')" />
+										<menuitem label="Resend Issue"
+											tooltiptext="Resend Issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('resendIssueButton', response=each)"
+											visible="@load(each.staffIssue.issueStatus eq 'RESENT' or item.issueStatus eq 'MOVED' ?'false':'true')" />
+
+										<menuitem label="view file"
+											tooltiptext="view file"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('downloadFile', response=each)"
+											visible="@load(each.document eq null?'false':'true')" />
+
+									</zk>
+								</menupopup>
+							</menu>
+
+						</menubar>
+					</div>
+
+
+				</row>
+			</template>
+		</grid>
+
+	</window>
+</zk>

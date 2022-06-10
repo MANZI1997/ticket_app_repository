@@ -1,0 +1,69 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="UpIssue" vflex="1"
+		border="none" width="100%" mode="embedded" sizable="false"
+		sclass="body-window"
+		viewModel="@id('vmUpIssue') @init('com.ticket.viewmodel.UpdateIssueVM')">
+		<auxhead>
+			<auxheader colspan="2" label="Registration Form"
+				iconSclass="z-icon-user-circle-o" />
+				
+		</auxhead>
+		<include src="/adminPage.zul"/>
+		<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+
+			<rows>
+				<row id="issueSbjctRow"
+					style="background-color:ECF3EC;">
+					<!-- constraint="no empty" -->
+					<label value="Issue Subject" />
+					<textbox id="issueSbjctBox"
+						value="@bind(vmUpIssue.selectedIssue.issueId.issueSubject)" hflex="1"
+						constraint="no empty" />
+				</row>
+
+
+
+				<row id="issueDescriptionRow"
+					style="background-color:ECF3EC;">
+					<!-- constraint="no empty" -->
+					<label value="Issue Description" />
+					<textbox id="issueDescriptionBox" hflex="1" rows="5"
+						cols="40" value="@bind(vmUpIssue.selectedIssue.issueId.issueDescription)"
+						constraint="no empty" />
+				</row>
+				<row id="issueRecepientRow"
+					style="background-color:ECF3EC;">
+					<!-- constraint="no empty" -->
+					<label value="Issue Description" />
+					<textbox id="issueRecipientBox" hflex="1" rows="5"
+						cols="40" value="@bind(vmUpIssue.selectedIssue.issueRecipient.firstName)"
+						constraint="no empty" />
+				</row>
+				
+<!-- 				    <row id="issueFileRow" style="background-color:lavenderblush;"> -->
+<!-- 					 constraint="no empty" -->
+<!-- 					<label value="Supporting document"/> -->
+<!-- 					<textbox id="issueFileBox" value="@bind(vmUpIssue.selectedIssue.issueId.document)" hflex="1" constraint="no empty"/> -->
+<!-- 					<button id="btn" label="Brouse.." -->
+<!-- 						style="background:white;color:black;" hflex="min" -->
+<!-- 						upload="true,maxsize=-1,multiple=true" -->
+<!-- 						onUpload="@command('doUpload')" /> -->
+<!-- 					</row> -->
+               
+
+ <row spans="1" align="right">
+                <hlayout>
+                    <button id="editButton" onClick="@command('updateIssue')" style="background:#81AC83;" label="Update"/>
+                    <button id="cancelButton" onClick="@command('closeThis')" style="background:#81AC83;" label="Cancel"/>
+                </hlayout>
+            </row>
+			</rows>
+		</grid>
+		
+	</window>
+</zk>

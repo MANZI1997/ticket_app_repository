@@ -1,0 +1,86 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" id="listCreatedIssuebyRecipient" vflex="1"
+		border="none" width="100%" mode="embedded" sclass="body-window"
+		maximizable="false" contentStyle="Overflow:auto"
+		viewModel="@id('vm') @init('com.ticket.viewmodel.CreatedIssueListByRecipientVM')">
+		<!-- 		<auxhead> -->
+		<!-- 			<auxheader colspan="2" label="Staff List" -->
+		<!-- 				iconSclass="z-icon-user-circle-o" /> -->
+		<!-- 		</auxhead> -->
+
+		<grid class="col-sm-4">
+			<columns visible="false">
+				<column />
+				<column />
+			</columns>
+		</grid>
+		<grid model="@load(vm.issuesByCreator)" mold="paging" pageSize="5">
+
+			<columns>
+				<column label="ID" align="center" style="background:#81AC83;" sort="auto(issueId)" />
+				<column label="SUBJECT" align="center"
+					sort="auto(issueSubject)"  style="background:#81AC83;"/>
+				
+				<column label="DESCRIPTION" style="background:#81AC83;" align="center"
+					sort="auto(issueDescription)" />
+
+				<column label="OPEN_DATE" style="background:#81AC83;" align="center"
+					sort="auto(issueOpenDate)" />
+						
+			    <column label="STATUS" style="background:#81AC83;" align="center"
+					sort="auto(issueStatus)"/>
+					<column label="RECIPIENT" style="background:#81AC83;" align="center"
+					sort="auto(issueStatus)"/>
+				
+<column label="ACTIONS"  style="background:#81AC83;" align="center" />
+			</columns>
+			<template name="model" var="item">
+				<row>
+					<label value="@load(item.issueId.issueId)" />
+					<label value="@load(item.issueId.issueSubject)" />
+					<label value="@load(item.issueId.issueDescription)" />
+				 <label value="@load(item.issueOpenDate)" />
+				 <label value="@load(item.issueStatus)" />
+				  <label value="@load(item.issueRecipient.firstName)" />
+
+					<div class="pull_right">
+						<menubar sclass="action-menubar">
+							<menu sclass="action-menu" label="Manage">
+								<menupopup>
+									<zk>
+
+										<menuitem label="Delete"
+											tooltiptext="Delete Issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('deleteIssue', staffIssue=item)" />
+
+										<menuitem label="Update"
+											tooltiptext="Update Issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('updateIssueButton', staffIssue=item)" />
+                                        
+                                         <menuitem label="View response"
+											tooltiptext="View Response"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('wiewResponseButton', staffIssue=item)" />
+
+<menuitem label="Forward Issue"
+											tooltiptext="Forward Issue"
+											iconSclass="fa fa-check fa-color-success"
+											onClick="@command('forwardIssueButton', staffIssue=item)" />
+
+									</zk>
+								</menupopup>
+							</menu>
+
+						</menubar>
+					</div>
+
+
+				</row>
+			</template>
+		</grid>
+
+	</window>
+</zk>
